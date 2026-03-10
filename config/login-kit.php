@@ -9,7 +9,7 @@ return [
     | URL gambar yang akan ditampilkan di samping form login.
     |
     */
-    'side_image' => env('LOGIN_KIT_SIDE_IMAGE', asset('images/login-kit/side-image.jpg')),
+    'side_image' => env('LOGIN_KIT_SIDE_IMAGE', 'images/login-kit/side-image.jpg'),
 
     /*
     |--------------------------------------------------------------------------

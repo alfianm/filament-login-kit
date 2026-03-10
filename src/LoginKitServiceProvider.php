@@ -29,9 +29,7 @@ class LoginKitServiceProvider extends PackageServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views/components', 'filament-login-kit');
         
         // Register Blade directives for version detection
-        Blade::directive('loginKitVersion', function () {
-            return "'" . $this->getFilamentVersion() . "'";
-        });
+        Blade::directive('loginKitVersion', fn (): string => '<?php echo \\' . static::class . '::getFilamentVersion(); ?>');
     }
 
     /**
@@ -39,26 +37,52 @@ class LoginKitServiceProvider extends PackageServiceProvider
      */
     public static function getFilamentVersion(): string
     {
-        try {
-            $version = InstalledVersions::getVersion('filament/filament');
-            
-            if (str_starts_with($version, '3.')) {
-                return '3';
-            } elseif (str_starts_with($version, '4.')) {
-                return '4';
-            } elseif (str_starts_with($version, '5.')) {
-                return '5';
-            }
-        } catch (\Exception $e) {
-            // Fallback: try to detect from classes
-            if (class_exists('Filament\Auth\Pages\Login')) {
-                return '5'; // v5 uses Filament\Auth\Pages\Login
-            } elseif (class_exists('Filament\Pages\Auth\Login')) {
-                return '3'; // v3 uses Filament\Pages\Auth\Login
+        $forcedVersion = (string) config('login-kit.force_version', '');
+
+        if (in_array($forcedVersion, ['3', '4', '5'], true)) {
+            return $forcedVersion;
+        }
+
+        foreach (['filament/filament', 'filament/panels'] as $packageName) {
+            $detectedVersion = static::detectMajorVersionFromPackage($packageName);
+
+            if ($detectedVersion !== null) {
+                return $detectedVersion;
             }
         }
-        
-        // Default to v5
+
+        // Fallback: class-based detection when composer metadata is unavailable.
+        if (class_exists('Filament\Pages\Auth\Login')) {
+            return '3';
+        }
+
+        if (class_exists('Filament\Auth\Pages\Login')) {
+            return '4';
+        }
+
         return '5';
+    }
+
+    protected static function detectMajorVersionFromPackage(string $packageName): ?string
+    {
+        try {
+            if (! InstalledVersions::isInstalled($packageName)) {
+                return null;
+            }
+
+            $version = InstalledVersions::getPrettyVersion($packageName) ?? InstalledVersions::getVersion($packageName);
+
+            if (! is_string($version)) {
+                return null;
+            }
+
+            if (preg_match('/(^|[^0-9])(3|4|5)(?:\\.x|\\.|$)/', $version, $matches)) {
+                return $matches[2];
+            }
+        } catch (\Throwable) {
+            return null;
+        }
+
+        return null;
     }
 }

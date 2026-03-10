@@ -10,8 +10,6 @@
     $overlayOpacity = $overlayOpacity ?? 0.5;
     
     // Konfigurasi form
-    $heading = $heading ?? 'Sign in';
-    $subheading = $subheading ?? null;
     $formPosition = $formPosition ?? 'center';
     $formAlignment = $formAlignment ?? 'center';
     $layoutMode = $layoutMode ?? 'split';
@@ -107,31 +105,6 @@
                 color: white;
             }
 
-            .flk-overlay-header {
-                margin-bottom: 1.5rem;
-            }
-
-            .flk-overlay-header h1 {
-                font-size: 1.5rem;
-                font-weight: 600;
-                color: rgb(17, 24, 39);
-                margin: 0 0 0.5rem 0;
-            }
-
-            .dark .flk-overlay-header h1 {
-                color: white;
-            }
-
-            .flk-overlay-header p {
-                font-size: 0.875rem;
-                color: rgb(107, 114, 128);
-                margin: 0;
-            }
-
-            .dark .flk-overlay-header p {
-                color: rgb(156, 163, 175);
-            }
-
             .flk-overlay-form {
                 margin-bottom: 1.5rem;
             }
@@ -166,13 +139,6 @@
                         <img src="{{ $brandLogo }}" alt="{{ filament()->getBrandName() }}">
                     @else
                         <span class="flk-overlay-brand-text">{{ filament()->getBrandName() }}</span>
-                    @endif
-                </div>
-
-                <div class="flk-overlay-header">
-                    <h1>{{ $heading }}</h1>
-                    @if ($subheading)
-                        <p>{{ $subheading }}</p>
                     @endif
                 </div>
 
@@ -340,21 +306,6 @@
             .flk-form-inner.align-center { text-align: center; }
             .flk-form-inner.align-right { text-align: right; }
 
-            .flk-form-header {
-                margin-bottom: 2rem;
-            }
-
-            .flk-form-header h1 {
-                font-size: 1.75rem;
-                font-weight: 600;
-                color: rgb(17, 24, 39);
-                margin: 0;
-            }
-
-            .dark .flk-form-header h1 {
-                color: white;
-            }
-
             .flk-form-content {
                 width: 100%;
             }
@@ -400,10 +351,6 @@
             {{-- FORM SIDE --}}
             <div class="flk-form position-{{ $formPosition }} {{ $sideImagePosition === 'right' ? 'order-1' : 'order-2' }}">
                 <div class="flk-form-inner align-{{ $formAlignment }}">
-                    <div class="flk-form-header">
-                        <h1>{{ $heading }}</h1>
-                    </div>
-
                     <div class="flk-form-content">
                         {{ $slot }}
                     </div>

@@ -17,6 +17,11 @@ class LoginKitPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
+        // Respect user-defined login pages.
+        if ($panel->hasLogin()) {
+            return;
+        }
+
         $version = LoginKitServiceProvider::getFilamentVersion();
         
         // Register appropriate login page based on Filament version

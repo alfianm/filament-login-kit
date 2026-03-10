@@ -2,6 +2,8 @@
 
 namespace AlfianM\FilamentLoginKit\Concerns;
 
+use Illuminate\Support\Str;
+
 trait HasLoginConfiguration
 {
     protected ?string $sideImage = null;
@@ -87,7 +89,17 @@ trait HasLoginConfiguration
     // Getters
     public function getSideImage(): string
     {
-        return $this->sideImage ?? asset('images/login-kit/side-image.jpg');
+        $image = $this->sideImage ?? config('login-kit.side_image', 'images/login-kit/side-image.jpg');
+
+        if (blank($image)) {
+            return asset('images/login-kit/side-image.jpg');
+        }
+
+        if (Str::startsWith($image, ['http://', 'https://', '//', 'data:', '/'])) {
+            return $image;
+        }
+
+        return asset($image);
     }
 
     public function getSideImagePosition(): string

@@ -13,9 +13,12 @@ use Illuminate\Contracts\Support\Htmlable;
  */
 class LoginPage extends Login
 {
-    protected static string $view = 'filament-login-kit-v4::pages.login';
-    
     protected static string $layout = 'filament-login-kit::components.layout.login';
+
+    public function getView(): string
+    {
+        return 'filament-login-kit-v4::pages.login';
+    }
 
     public static function isSimple(): bool
     {
