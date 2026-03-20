@@ -14,6 +14,8 @@ Beautiful, customizable login layouts for **Filament v3, v4, and v5**. Transform
 - ⚡ **Zero Build**: Works without npm/yarn
 - 🔧 **Easy Config**: Simple method chaining
 - 🔄 **Multi-Version**: Supports Filament v3, v4, and v5
+- 🚀 **Laravel 13 Compatible**: Tested and working with Laravel 13
+- 🐘 **PHP 8.3 Support**: Fully compatible with PHP 8.3
 
 ## 📦 Installation
 
